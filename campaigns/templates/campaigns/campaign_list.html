@@ -1,0 +1,39 @@
+{% extends 'campaigns/base.html' %}
+
+{% block title %}Campaigns - Xoftion AutoReach{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Email Campaigns</h1>
+    <a href="{% url 'campaign_create' %}" class="btn btn-primary">Create New Campaign</a>
+</div>
+
+{% if campaigns %}
+    <div class="row">
+        {% for campaign in campaigns %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card campaign-card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ campaign.name }}</h5>
+                        <p class="card-text text-muted">{{ campaign.subject }}</p>
+                        <p class="card-text"><small>{{ campaign.message|truncatewords:20 }}</small></p>
+                        <div class="mb-2">
+                            <span class="badge bg-{% if campaign.status == 'completed' %}success{% elif campaign.status == 'sending' %}warning{% elif campaign.status == 'draft' %}secondary{% else %}info{% endif %}">
+                                {{ campaign.get_status_display }}
+                            </span>
+                        </div>
+                        <p class="card-text"><small class="text-muted">Created: {{ campaign.created_at|date:"M d, Y" }}</small></p>
+                        <a href="{% url 'campaign_detail' campaign.id %}" class="btn btn-sm btn-outline-primary">View Details</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        <h4>No campaigns yet</h4>
+        <p>Create your first email campaign to get started!</p>
+        <a href="{% url 'campaign_create' %}" class="btn btn-primary">Create Campaign</a>
+    </div>
+{% endif %}
+{% endblock %}

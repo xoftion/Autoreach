@@ -1,0 +1,92 @@
+{% extends 'campaigns/base.html' %}
+
+{% block title %}{{ action }} Campaign - Xoftion AutoReach{% endblock %}
+
+{% block content %}
+<h1>{{ action }} Campaign</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Campaign Details</h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="{{ form.name.id_for_label }}" class="form-label">Campaign Name</label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <div class="text-danger">{{ form.name.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.subject.id_for_label }}" class="form-label">Email Subject</label>
+                {{ form.subject }}
+                {% if form.subject.errors %}
+                    <div class="text-danger">{{ form.subject.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.message.id_for_label }}" class="form-label">Message</label>
+                {{ form.message }}
+                <small class="form-text text-muted">This will be converted to a professional HTML email.</small>
+                {% if form.message.errors %}
+                    <div class="text-danger">{{ form.message.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="{{ form.send_interval_minutes.id_for_label }}" class="form-label">Send Interval (minutes)</label>
+                {{ form.send_interval_minutes }}
+                <small class="form-text text-muted">Time between each email send (default: 10 minutes).</small>
+                {% if form.send_interval_minutes.errors %}
+                    <div class="text-danger">{{ form.send_interval_minutes.errors }}</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Images (Optional - up to 3)</h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="{{ form.image1.id_for_label }}" class="form-label">Image 1</label>
+                {{ form.image1 }}
+            </div>
+            <div class="mb-3">
+                <label for="{{ form.image2.id_for_label }}" class="form-label">Image 2</label>
+                {{ form.image2 }}
+            </div>
+            <div class="mb-3">
+                <label for="{{ form.image3.id_for_label }}" class="form-label">Image 3</label>
+                {{ form.image3 }}
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Recipients</h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="{{ form.csv_file.id_for_label }}" class="form-label">Upload CSV File</label>
+                {{ form.csv_file }}
+                <small class="form-text text-muted">
+                    CSV should have columns: email, name<br>
+                    Example: email,name<br>
+                    john@example.com,John Doe
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">{{ action }} Campaign</button>
+    <a href="{% url 'campaign_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}
